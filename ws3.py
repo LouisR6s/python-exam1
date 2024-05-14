@@ -16,21 +16,40 @@ def recherche_dichotomique(tableau, element_recherche):
     return -1
 
 def afficher_tableau(tableau):
-    print("Tablea trié :", tableau)
+    print("Tableau trié :", tableau)
 
-def tableau():
-    # Exemple de tableau trié
-    tableau = [2, 4, 7, 9, 13, 16, 19, 22, 25]
-    element_recherche = 16
+def saisie_tableau():
+    tableau = []
+    print("Veuillez entrer 10 nombres pour former le tableau:")
+    for i in range(10):
+        while True:
+            try:
+                chiffre = int(input(f"Entrez le chiffre {i+1}: "))
+                tableau.append(chiffre)
+                break
+            except ValueError:
+                print("Veuillez entrer un nombre entier valide.")
 
-    afficher_tableau(tableau)
+    tableau.sort()  # Tri automatique dans l'ordre croissant
+    return tableau
+
+def recherche():
+    tableau_entre = saisie_tableau()
+    afficher_tableau(tableau_entre)
     
-    index_trouve = recherche_dichotomique(tableau, element_recherche)
+    while True:
+        try:
+            element_recherche = int(input("Entrez le nombre que vous cherchez : "))
+            break
+        except ValueError:
+            print("Veuillez entrer un nombre entier valide.")
+
+    index_trouve = recherche_dichotomique(tableau_entre, element_recherche)
 
     if index_trouve != -1:
-        print(f"L'élément {element_recherche} se trouve à l'index {index_trouve}")
+        print(f"L'élément {element_recherche} se trouve à l'index {index_trouve} dans le tableau.")
     else:
-        print(f"L'élément {element_recherche} n'a pas été trouvé")
+        print(f"L'élément {element_recherche} ne fait pas partie du tableau.")
 
 if __name__ == "__main__":
-    tableau()
+    recherche()
