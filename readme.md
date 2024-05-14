@@ -4,5 +4,3 @@
 
 - Sp00p64 : Maxence Haution
 - LouisR6s : Louis Jouhannet
-
-test
