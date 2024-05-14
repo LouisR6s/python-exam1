@@ -3,9 +3,9 @@
 # Attribution des exercices : 
 - Plus ou moins : Louis
 - Recherche dichotomique : à voir 
-- N-reines : louis
+- N-reines : Louis
 - Bataille navalle : Maxence
-- Somme parallele : Maxence 
+- Somme parallele : Maxence
 - Systeme de backup : Louis
 - Histogramme : Maxence
 
