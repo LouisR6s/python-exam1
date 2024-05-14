@@ -1,5 +1,32 @@
 import string
 import emoji
+import socket
+
+def create_grid(position,value):
+    hit=False
+    try:
+        # Ici on as besoin d'obtenir la position basé sur la lettre de la columne
+        column = string.ascii_uppercase.index(position[0].upper())
+        
+        # Convertir le chiffre du row en index (1=0, 2=1, etc.)
+        row = int(position[1]) - 1
+        
+        #On vérifie si tout ici est valide
+        if 0 <= row < num_rows and 0 <= column < num_tiles:
+            # Et enfin on update le grid
+            if grid[row][column] == "🚤":
+                hit=True
+            grid[row][column] = value
+        else:
+            print("Position invalide, essayez encore.")
+    except ValueError:
+        print("Entrée invalide, essayez encore.")
+    print_grid_with_rows(num_rows, num_tiles, grid)
+    if hit:
+        return "Hit"
+    else:
+        return None
+
 def print_horizontal_line(num_tiles=6):
     # Ici j'ai déconstruit le cube en plusieurs parties pour formatter avec les lettres
     top_part = " --- "
@@ -63,25 +90,6 @@ for i in range(num_rows):
 
 print_grid_with_rows(num_rows, num_tiles, grid)
 
-def create_grid(position,value):
-    try:
-        # Ici on as besoin d'obtenir la position basé sur la lettre de la columne
-        column = string.ascii_uppercase.index(position[0].upper())
-        
-        # Convertir le chiffre du row en index (1=0, 2=1, etc.)
-        row = int(position[1]) - 1
-        
-        #On vérifie si tout ici est valide
-        if 0 <= row < num_rows and 0 <= column < num_tiles:
-            # Et enfin on update le grid
-            grid[row][column] = value
-        else:
-            print("Position invalide, essayez encore.")
-    except ValueError:
-        print("Entrée invalide, essayez encore.")
-    
-    print_grid_with_rows(num_rows, num_tiles, grid)
-
 count = 5
 while True:
     if count == 0:
@@ -92,3 +100,37 @@ while True:
     user_input = input("Ou veux tu poser tes bateaux ? (par exemple, A1): ")
     count = count - 1  
     create_grid(user_input,"🚤")
+
+hote = "localhost"
+port = 4444
+socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+socket.connect((hote, port))
+print(f"Connection on {port}")
+socket.send("Ready to play!".encode())
+boats_left = 5
+while True:
+    has_been_hit_this_turn=0
+    print("[*] En attente du joueur.....")
+    message = socket.recv(255).decode()
+    if '-1' in message:
+        message=message.replace('-1', '')
+        print("[+] Tu as touché le joueur adverse ! :)")
+    elif "j'ai perdu :(" in message:
+        print("[+] Félicitation tu as remporté la partie ! :)")
+        exit()
+    print(f"[*] Le joueur adverse à tiré ici : {message}")
+    if create_grid(message,"🔥"):
+        print("[!] Tu as été touché !")
+        boats_left-=1
+        has_been_hit_this_turn=1
+    if boats_left == 0:
+        print("[!] Perdu :(")
+        losing_message = "j'ai perdu :("
+        socket.send(losing_message.encode())
+        exit()
+    place_to_hit = input("Ou veux tu tirer ? > ")
+    if has_been_hit_this_turn:
+        place_to_hit=f"-1{place_to_hit}"
+        socket.send(place_to_hit.encode())
+print("Close")
+socket.close()
