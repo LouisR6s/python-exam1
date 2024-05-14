@@ -58,16 +58,13 @@ num_rows = 5
 num_tiles = 6
 grid = []
 for i in range(num_rows):
-    row = ["X"] * num_tiles
+    row = [" "] * num_tiles
     grid.append(row)
 
 print_grid_with_rows(num_rows, num_tiles, grid)
 
-user_input = input("Entrez la position et la valeur à changer dans la grille (par exemple, A1 0): ")
-while user_input:
+def create_grid(position,value):
     try:
-        position, value = user_input.split()
-    
         # Ici on as besoin d'obtenir la position basé sur la lettre de la columne
         column = string.ascii_uppercase.index(position[0].upper())
         
@@ -84,5 +81,14 @@ while user_input:
         print("Entrée invalide, essayez encore.")
     
     print_grid_with_rows(num_rows, num_tiles, grid)
-    
-    user_input = input("Entrez la position et la valeur à changer dans la grille (par exemple, A1 0): ")
+
+count = 5
+while True:
+    if count == 0:
+        print("Tu as posé tout tes bateaux")
+        break
+    else:
+        print(f"Il te reste {count} bateaux à poser")  
+    user_input = input("Ou veux tu poser tes bateaux ? (par exemple, A1): ")
+    count = count - 1  
+    create_grid(user_input,"🚤")
