@@ -1,0 +1,22 @@
+def compter_lettres(texte):
+    compteur = {}
+    for char in texte:
+        if char.isalpha():  # Vérifie si le caractère est une lettre
+            char = char.lower()  # Convertit en minuscule pour regrouper les lettres majuscules et minuscules
+            if char in compteur:
+                compteur[char] += 1
+            else:
+                compteur[char] = 1
+    return compteur
+
+def tableau(compteur):
+    for lettre, count in sorted(compteur.items()):  # Trie par ordre alphabétique
+        print(f"{lettre} : {'X' * count}")
+
+def main():
+    texte = input("Entrer un texte : ")
+    compteur = compter_lettres(texte)
+    tableau(compteur)
+
+if __name__ == "__main__":
+    main()

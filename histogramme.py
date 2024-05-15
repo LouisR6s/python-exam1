@@ -10,5 +10,9 @@ for char in text:
         else:
             letter_counts[char] = 1
 
-for letter, count in letter_counts.items():
-    print(f"La lettre {letter} apparais {count} fois")
+# Ici on cherche la valeur maximum pour l'utiliser en tant que 100%
+max_count = max(letter_counts.values())
+
+for letter, count in sorted(letter_counts.items()):
+    num_blocks = (count * 10) // max_count
+    print(f"{letter} {'■' * num_blocks}")
