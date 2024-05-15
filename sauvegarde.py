@@ -33,3 +33,31 @@ def backup_path(src_path, dest_dir):
         print(f"Permission refusée pour accéder à {src_path}.")
     except Exception as e:
         print(f"Erreur lors de la sauvegarde de {src_path}: {e}")
+
+def main():
+    config_path = 'config.json'
+    config = load_config(config_path)
+    
+    if config is None:
+        return
+    
+    backup_paths = config.get('backup_paths', [])
+    backup_destination = config.get('backup_destination')
+    
+    if not backup_paths or not backup_destination:
+        print("Le fichier de configuration doit contenir 'backup_paths' et 'backup_destination'.")
+        return
+    
+    if not os.path.exists(backup_destination):
+        try:
+            os.makedirs(backup_destination)
+            print(f"Répertoire de destination {backup_destination} créé.")
+        except Exception as e:
+            print(f"Impossible de créer le répertoire de destination {backup_destination}: {e}")
+            return
+    
+    for path in backup_paths:
+        backup_path(path, backup_destination)
+
+if __name__ == "__main__":
+    main()
