@@ -19,18 +19,18 @@ def afficher_tableau(tableau):
     print("Tableau trié :", tableau)
 
 def saisie_tableau():
-    tableau = []
-    print("Veuillez entrer 10 nombres pour former le tableau:")
-    for i in range(10):
-        while True:
-            try:
-                chiffre = int(input(f"Entrez le chiffre {i+1}: "))
-                tableau.append(chiffre)
-                break
-            except ValueError:
-                print("Veuillez entrer un nombre entier valide.")
+    while True:
+        try:
+            taille = int(input("Veuillez entrer la taille du tableau : "))
+            if taille <= 0:
+                print("Veuillez entrer un nombre entier positif.")
+                continue
+            break
+        except ValueError:
+            print("Veuillez entrer un nombre entier valide.")
 
-    tableau.sort()  # Tri automatique dans l'ordre croissant
+    tableau = list(range(1, taille + 1))  # Générer une liste de 1 à taille
+    print(f"Tableau de taille {taille} généré automatiquement.")
     return tableau
 
 def recherche():
